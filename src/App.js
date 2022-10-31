@@ -1,23 +1,32 @@
 import logo from './logo.svg';
 import './App.css';
+import { useState } from 'react';
 
 function App() {
+  const [data, setData]= useState({})
+  const [location, setLocation] = useState('')
+  const url =`https://api.openweathermap.org/data/2.5/weather?q=${location}&units=imperial&appid=${process.env.REACT_APP_APIKEY}`
+    
+  const handlesearch=(event)=>
+     {if(event.key === 'Enter')
+    
+   { fetch(url)
+    .then(res=> res.json())
+    .then(data=> setData(data))
+    setLocation('')
+  }
+
+  }
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div >
+      <input type="text" name="location" id="" placeholder='location'
+      value={location} 
+      onChange={event => setLocation(event.target.value)}
+      onKeyPress={handlesearch}
+      />
+      <div>
+       <p> {data?.main?.temp}</p>
+      </div>
     </div>
   );
 }
